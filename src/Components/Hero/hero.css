@@ -1,0 +1,66 @@
+.home-page-hero-content {
+    border-radius: 10px;
+    padding: 4em 2em;
+    background: url("../../assets/denise-jans-tV80374iytg-unsplash.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-blend-mode: multiply;
+}
+
+.home-page-hero-content-heading {
+    margin-bottom: 5em;
+}
+
+.home-page-hero-content-title {
+    font-size: 3.25rem;
+    margin-bottom: 0.25em;
+}
+
+.home-page-hero-content-subtitle {
+    font-size: 2.5rem;
+}
+
+.home-page-hero-content-form {
+    max-width: 700px;
+    gap: 0.75em;
+}
+
+.home-page-hero-content-form input {
+    width: 100%;
+    padding: 0.5em 1em;
+    border: none;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: var(--dark-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.home-page-hero-content-form input:focus {
+    outline: 1px solid var(--accent-color);
+}
+
+.home-page-hero-content-form input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+
+@media(max-width: 700px) {
+    .home-page-hero-content {
+        border-radius: 0;
+        width: 100%;
+        padding: 3em 1.5em;
+    }
+
+    .home-page-hero-content-title {
+        font-size: 2.75rem;
+        margin-bottom: 0.4em;
+    }
+
+    .home-page-hero-content-subtitle {
+        font-size: 2rem;
+    }
+}

@@ -1,0 +1,33 @@
+header{
+    color: #48cae4;
+}
+.header-logo{
+    font-family: 'Unbounded', cursive;
+}
+.nav-link{
+    font-size: 1.2rem;
+    color: #fafafa;
+    padding: 0;
+}
+
+.nav-link:focus{
+    color: #fafafa;
+}
+
+.nav-link:hover{
+    color: #48cae4;
+}
+
+.nav-item{
+    margin-left: 3em;
+}
+
+.link-active{
+    border-bottom: 3px solid var(--accent-color);
+}
+
+@media(max-width: 700px){
+    .nav-item{
+        margin-left: 2em;
+    }
+}
