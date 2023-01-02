@@ -4,7 +4,8 @@
     margin-right: 1em;
     border-radius: 10px;
     overflow: hidden;
-    min-width: fit-content;
+    min-width: 200px;
+    max-width: 200px;
 }
 
 .my-card img, .no-img-availble {
@@ -53,6 +54,12 @@
 @media(max-width: 700px) {
     .my-card {
         margin-right: 0.75em;
+        min-width: 150px;
+        max-width: 150px;
+    }
+    
+    .my-card-image-hover:hover{
+        transform: scale(1);
     }
 
     .my-card img, .no-img-availble {
