@@ -5,7 +5,7 @@ export default function List({title, data}){
     return(
         <div className='content-container' style={{marginTop: '1.75em'}}>
             <h1 className='list-title'>{title}</h1>
-            <div className='list-content d-flex overflow-auto align-items-stretch'>
+            <div className='list-content d-flex overflow-auto'>
                 {data.map((ent, i)=>{
                     return <Card key={i}
                                  title={ent.title} 

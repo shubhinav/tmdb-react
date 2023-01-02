@@ -1,6 +1,7 @@
 import './card.css'
 import { Link } from 'react-router-dom'
 import { makeImgUrl } from '../../Utils/utilityFunctions'
+import { Icon } from '@iconify/react';
 
 export default function Card({ title, name, character, job, movieImgUrl, castImgUrl, vidKey, id }) {
     return (
@@ -8,13 +9,13 @@ export default function Card({ title, name, character, job, movieImgUrl, castImg
             {
                 movieImgUrl &&
                 <Link to={`/movie/${id}`} className='my-card'>
-                    <img className='my-card-image' src={makeImgUrl(movieImgUrl, 'w500')} alt={`${title}`} />
+                    <img className='my-card-image-hover' src={makeImgUrl(movieImgUrl, 'w500')} alt={`${title}`} />
                 </Link>
             }
             {
-                castImgUrl &&
+                name && (character || job) &&
                 <div className='my-card'>
-                    <img className='my-card-image-cast' src={makeImgUrl(castImgUrl, 'w500')} alt={`${name}`} />
+                    {castImgUrl ? <img src={makeImgUrl(castImgUrl, 'w500')} alt={`${name}`} /> : <div className='no-img-availble'><Icon width='70' height='70' icon="ic:round-person" /></div>}
                     <p className='mb-0 mt-1'>{name}</p>
                     {character  && <p className='text-muted mb-0'>{character.replace('(uncredited)', '')}</p>}
                     {job && <p className='text-muted mb-0'>{job}</p>}

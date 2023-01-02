@@ -1,53 +1,71 @@
-.my-card{
-    min-width: 200px;
-    max-width: 200px;
+.my-card {
+    display: flex;
+    flex-direction: column;
     margin-right: 1em;
     border-radius: 10px;
     overflow: hidden;
+    min-width: fit-content;
 }
 
-.my-card:focus{
+.my-card img, .no-img-availble {
+    border-radius: 10px;
+    min-width: 200px;
+    min-height: 300px;
+    max-width: 200px;
+    max-height: 300px;
+}
+
+.my-card-image-hover{
+    transition: transform 0.2s;
+}
+
+.my-card-image-hover:hover{
+    transform: scale(1.03);
+}
+
+.my-card:focus {
     outline: none;
     border: 1px solid var(--accent-color);
 }
 
-.my-card:last-child{
+.my-card:last-child {
     margin-right: 0;
 }
 
-.my-card-image{
-    height: 100%;
-    border-radius: 10px;
-    transition: transform 0.2s;
-}
-.my-card-image-cast{
-    border-radius: 10px;
-    transition: transform 0.2s;
-}
-
-.my-card-image:hover{
-    transform: scale(1.03);
-}
-
-.my-card-videos{
+.my-card-videos {
     margin-right: 1em;
 }
-.my-card-videos iframe{
+
+.my-card-videos iframe {
     border-radius: 10px;
     width: 400px;
     height: 226px;
 }
 
-@media(max-width: 700px){
-    .my-card{
-        min-width: 150px;
-        max-width: 150px;
+.no-img-availble {
+    background-color: rgb(68, 68, 68);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--dark-color);
+}
+
+@media(max-width: 700px) {
+    .my-card {
         margin-right: 0.75em;
     }
-    .my-card-videos iframe{
+
+    .my-card img, .no-img-availble {
+        min-width: 150px;
+        min-height: 225px;
+        max-width: 150px;
+        max-height: 225px;
+    }
+
+    .my-card-videos iframe {
         border-radius: 10px;
         width: 300px;
         height: 170px;
     }
-    
+
 }
