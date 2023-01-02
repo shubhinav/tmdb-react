@@ -9,13 +9,13 @@ export default function Card({ title, name, character, job, movieImgUrl, castImg
             {
                 movieImgUrl &&
                 <Link to={`/movie/${id}`} className='my-card'>
-                    <img className='my-card-image-hover' src={makeImgUrl(movieImgUrl, 'w500')} alt={`${title}`} />
+                    <img loading='lazy' className='my-card-image-hover' src={makeImgUrl(movieImgUrl, 'w500')} alt={`${title}`} />
                 </Link>
             }
             {
                 name && (character || job) &&
                 <div className='my-card'>
-                    {castImgUrl ? <img src={makeImgUrl(castImgUrl, 'w500')} alt={`${name}`} /> : <div className='no-img-availble'><Icon width='70' height='70' icon="ic:round-person" /></div>}
+                    {castImgUrl ? <img loading='lazy' src={makeImgUrl(castImgUrl, 'w500')} alt={`${name}`} /> : <div className='no-img-availble'><Icon width='70' height='70' icon="ic:round-person" /></div>}
                     <p className='mb-0 mt-1'>{name}</p>
                     {character  && <p className='text-muted mb-0'>{character.replace('(uncredited)', '')}</p>}
                     {job && <p className='text-muted mb-0'>{job}</p>}
@@ -24,7 +24,7 @@ export default function Card({ title, name, character, job, movieImgUrl, castImg
             {
                 vidKey && 
                 <div className='my-card-videos'>
-                    <iframe src={`https://www.youtube.com/embed/${vidKey}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope" allowFullScreen></iframe>
+                    <iframe loading='lazy' src={`https://www.youtube.com/embed/${vidKey}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope" allowFullScreen></iframe>
                 </div>
             }
         </>

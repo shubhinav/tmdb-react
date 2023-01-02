@@ -9,6 +9,7 @@
 }
 
 .my-card img, .no-img-availble {
+    background-color: rgb(68, 68, 68);
     border-radius: 10px;
     min-width: 200px;
     min-height: 300px;
@@ -34,7 +35,11 @@
 }
 
 .my-card-videos {
+    border-radius: 10px;
+    background-color: rgb(68, 68, 68);
     margin-right: 1em;
+    border-radius: 10px;
+    display: flex;
 }
 
 .my-card-videos iframe {

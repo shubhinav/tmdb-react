@@ -160,7 +160,7 @@ export default function Details() {
                 return (
                     <div>
                         <p style={{ fontSize: '1.15rem' }} className="mb-1">Buy or Rent</p>
-                        {myObj.CA.buy.map((ent,i) => {
+                        {myObj.CA.rent.map((ent,i) => {
                             return <img key={i} width='40px' height='40px' style={{ borderRadius: '5px', marginRight: '5px' }} src={makeImgUrl(ent.logo_path)} alt={ent.provider_name} />
                         })}
                     </div>
