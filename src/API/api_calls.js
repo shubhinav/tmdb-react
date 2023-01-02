@@ -18,5 +18,5 @@ export function getUpcomingMovies(page = 1){
 }
 
 export function getMovieDetails(param){
-    return axios.get(`${baseURL}/movie/${param}?api_key=${process.env.REACT_APP_API_KEY}&append_to_response=videos,release_dates`)
+    return axios.get(`${baseURL}/movie/${param}?api_key=${process.env.REACT_APP_API_KEY}&append_to_response=videos,release_dates,watch/providers,credits,recommendations`)
 }

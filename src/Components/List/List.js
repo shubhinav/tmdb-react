@@ -7,7 +7,15 @@ export default function List({title, data}){
             <h1 className='list-title'>{title}</h1>
             <div className='list-content d-flex overflow-auto align-items-stretch'>
                 {data.map((ent, i)=>{
-                    return <Card key={i} data={ent}/>
+                    return <Card key={i}
+                                 title={ent.title} 
+                                 name={ent.name} 
+                                 character={ent.character} 
+                                 job={ent.job} 
+                                 movieImgUrl={ent.poster_path} 
+                                 castImgUrl={ent.profile_path} 
+                                 vidKey={ent.key}
+                                 id={ent.id}/>
                 })}
             </div>
         </div>

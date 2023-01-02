@@ -2,6 +2,9 @@ import Header from "../../Components/Header/Header"
 import FadeIn from "react-fade-in/lib/FadeIn"
 import Loader from "../../Components/Utils/Loader/Loader"
 import Hero from "../../Components/Hero/Hero"
+import List from "../../Components/List/List"
+import Footer from "../../Components/Footer/Footer"
+import ErrorMessage from "../../Components/ErrorMessage/ErrorMessage"
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { makeImgUrl, convertMinsToHours, convertDatefromISO } from "../../Utils/utilityFunctions"
@@ -11,26 +14,64 @@ export default function Details() {
 
     const params = useParams()
 
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [details, setDetails] = useState()
+    const [mainCrew, setMainCrew] = useState()
+    const [trailers, setTrailers] = useState()
+    const [recommendations, setRecommendations] = useState()
 
     let regionReleaseDate;
 
     useEffect(() => {
+
+        window.scrollTo(0,0)
+
+        setLoading(true)
+        setDetails()
+        setMainCrew()
+        setTrailers()
+        setRecommendations()
+
         getMovieDetails(params.movieId).then(res => {
             setDetails(res.data)
+            getMainCrew(res.data)
+            getTrailers(res.data)
+            setRecommendations(res.data.recommendations.results)
+            setLoading(false)
+        }).catch(() => {
+            setError(true)
+            setLoading(false)
         })
     }, [params.movieId])
 
-    function getCertification() {
+    function getMainCrew(data) {
+        const crew = data.credits.crew.filter(ent => {
+            return ent.job == "Director" || ent.job == "Writer" || ent.job == "Producer" || ent.job == "Casting"
+        })
+        setMainCrew(crew)
+    }
 
+    function getTrailers(data) {
+        const vids = data.videos.results.filter(ent => {
+            return ent.type == "Trailer" || ent.type == "Teaser"
+        })
+        setTrailers(vids)
+    }
+
+    function getCertification() {
 
         function getOtherCertification() {
             const obj = details.release_dates.results.find(ent => {
                 return ent.release_dates.find(date => date.certification !== "")
             })
-            return obj.release_dates[0].certification
+            if (obj) {
+                return obj.release_dates[0].certification
+            }
+            else {
+                return ""
+            }
         }
-
 
         function getUsCertificate() {
             const usReleaseDates = details.release_dates.results.find(ent => ent.iso_3166_1 == 'US')
@@ -88,11 +129,54 @@ export default function Details() {
             return 'green'
         }
     }
+
+    function getWhereToWatch() {
+
+        const myObj = details['watch/providers'].results
+
+        if ("CA" in myObj) {
+            if ('flatrate' in myObj.CA) {
+                return (
+                    <div>
+                        <p style={{ fontSize: '1.15rem' }} className="mb-1">Now Streaming</p>
+                        {myObj.CA.flatrate.map((ent, i) => {
+                            return <img key={i} width='40px' height='40px' style={{ borderRadius: '5px', marginRight: '5px' }} src={makeImgUrl(ent.logo_path)} alt={ent.provider_name} />
+                        })}
+                    </div>
+                )
+            }
+
+            if ('buy' in myObj.CA) {
+                return (
+                    <div>
+                        <p style={{ fontSize: '1.15rem' }} className="mb-1">Buy or Rent</p>
+                        {myObj.CA.buy.map((ent, i) => {
+                            return <img key={i} width='40px' height='40px' style={{ borderRadius: '5px', marginRight: '5px' }} src={makeImgUrl(ent.logo_path)} alt={ent.provider_name} />
+                        })}
+                    </div>
+                )
+            }
+            if ('rent' in myObj.CA) {
+                return (
+                    <div>
+                        <p style={{ fontSize: '1.15rem' }} className="mb-1">Buy or Rent</p>
+                        {myObj.CA.buy.map((ent,i) => {
+                            return <img key={i} width='40px' height='40px' style={{ borderRadius: '5px', marginRight: '5px' }} src={makeImgUrl(ent.logo_path)} alt={ent.provider_name} />
+                        })}
+                    </div>
+                )
+            }
+        }
+
+        return <></>
+    }
+
     return (
         <div>
             <Header />
-            {details
-                ?
+            {error && <ErrorMessage />}
+            {loading && <div className="mt-5 pt-5"><Loader /></div>}
+            {!loading && !error &&
                 <FadeIn>
                     <Hero bgUrl={makeImgUrl(details.backdrop_path)} paddingY='2em' opacity="0.65">
                         <div className="details-page-hero d-flex align-items-center">
@@ -115,27 +199,36 @@ export default function Details() {
                                 <div className="details-page-hero-content-genres d-flex flex-wrap gap-1">
                                     {details.genres.map((ent, i) => {
                                         if (i == details.genres.length - 1) {
-                                            return <p className="details-page-hero-content-genres-single mb-0">{ent.name}</p>
+                                            return <p key={i} className="details-page-hero-content-genres-single mb-0">{ent.name}</p>
                                         }
                                         else {
-                                            return <p className="details-page-hero-content-genres-single mb-0">{ent.name} &#x2022;</p>
+                                            return <p key={i} className="details-page-hero-content-genres-single mb-0">{ent.name} &#x2022;</p>
                                         }
                                     })}
                                 </div>
                                 <p className="details-page-hero-content-overview mb-0">{details.overview}</p>
-                                <div className="details-page-hero-content-rating-content d-flex align-items-center gap-2">
-                                    <p style={{ backgroundColor: getRatingColor(details.vote_average) }} className="details-page-hero-content-rating m-0">{details.vote_average.toFixed(1)}</p>
-                                    <div>
-                                        <p className="mb-1">User Score</p>
-                                        <p className="mb-0 details-page-hero-content-rating-count">Based on {details.vote_count} ratings</p>
+                                <div className="details-page-hero-content-rating-and-watch d-flex flex-wrap">
+                                    <div className="details-page-hero-content-rating-content d-flex align-items-center gap-2">
+                                        <p style={{ backgroundColor: getRatingColor(details.vote_average) }} className="details-page-hero-content-rating m-0">{details.vote_average.toFixed(1)}</p>
+                                        <div>
+                                            <p className="mb-1">User Score</p>
+                                            <p className="mb-0 details-page-hero-content-rating-count">Based on {details.vote_count} ratings</p>
+                                        </div>
                                     </div>
+                                    {details['watch/providers']
+                                        ?
+                                        getWhereToWatch()
+                                        : <></>}
                                 </div>
                             </div>
                         </div>
                     </Hero>
-                </FadeIn>
-                :
-                <div className="mt-5 pt-5"><Loader /></div>}
+                    {details.credits.cast.length ? <List title="Cast" data={details.credits.cast} /> : <></>}
+                    {mainCrew.length ? <List title="Main Crew" data={mainCrew} /> : <></>}
+                    {trailers.length ? <List title="Trailers & Teasers" data={trailers} /> : <></>}
+                    {recommendations.length ? <List title="Recommendations" data={recommendations} /> : <></>}
+                    <Footer />
+                </FadeIn>}
         </div>
     )
 }
