@@ -1,6 +1,6 @@
-import Home from './Pages/Home';
-import Discover from './Pages/Discover';
-import Details from './Pages/Details';
+import Home from './Pages/Home/Home';
+import Discover from './Pages/Discover/Discover';
+import Details from './Pages/Details/Details';
 import ErrorMessage from './Components/ErrorMessage/ErrorMessage';
 import {Routes, Route} from 'react-router-dom'
 

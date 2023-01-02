@@ -1,4 +1,4 @@
-import Header from "../Components/Header/Header";
+import Header from "../../Components/Header/Header";
 
 export default function Discover(){
     return(

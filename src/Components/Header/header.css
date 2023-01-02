@@ -1,8 +1,11 @@
-header{
-    color: #48cae4;
-}
+
 .header-logo{
     font-family: 'Unbounded', cursive;
+}
+
+.header-logo a{
+    color: #48cae4;
+    text-decoration: none;
 }
 .nav-link{
     font-size: 1.2rem;

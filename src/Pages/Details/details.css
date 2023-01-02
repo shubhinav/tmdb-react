@@ -1,0 +1,68 @@
+
+/* HERO AREA */
+
+.details-page-hero{
+    gap: 2em;
+}
+
+.details-page-hero-content{
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.details-page-hero-poster{
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.details-page-hero-poster img{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+}
+
+.details-page-hero-content-tags-certification{
+    color: rgb(195, 195, 195);
+    padding: 0em 0.25em;
+    border: 1px solid rgb(195, 195, 195);
+    border-radius: 3px;
+}
+
+.details-page-hero-content-genres-single{
+    font-size: 1.3rem;
+}
+
+.details-page-hero-content-rating{
+    padding: 0.5em;
+    border-radius: 10px;
+    width: fit-content;
+    font-size: 1.2rem;
+    color: var(--light-color);
+}
+
+.details-page-hero-content-rating-count{
+    font-size: 0.8rem;
+}
+
+
+@media(max-width: 880px){
+    .details-page-hero-poster{
+        display: none;
+    }
+    .details-page-hero-content{
+        padding: 0;
+    }
+}
+
+@media(max-width: 700px){
+    .details-page-hero-content-title{
+        font-size: 2.25rem;
+    }
+}
+
+@media(max-width: 420px){
+    .details-page-hero-content-genres-single{
+        font-size: 1.15rem;
+    }
+}

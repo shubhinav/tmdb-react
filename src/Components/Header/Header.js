@@ -25,7 +25,7 @@ export default function Header({page}){
     return(
         <header>
             <div className="content-container d-flex justify-content-between align-items-center py-4">
-                <h1 className="header-logo mb-0">TMDB<Icon icon="bxs:camera-movie" inline={true} /></h1>
+                <h1 className="header-logo mb-0"><Link to="/">TMDB<Icon icon="bxs:camera-movie" inline={true} /></Link></h1>
                 <nav>
                     <ul className="nav">
                         <li className="nav-item"><Link className={homeClassName()} to="/">Home</Link></li>
