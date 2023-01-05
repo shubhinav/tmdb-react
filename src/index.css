@@ -4,6 +4,7 @@
 :root{
   --accent-color: #48cae4;
   --dark-color: #323232;
+  --mid-dark-color: #444444;
   --light-color: #fafafa
 }
 
@@ -24,6 +25,7 @@ body {
 
 img{
   max-width: 100%;
+  height: auto;
 }
 
 p,h1,h2,h3,h4,h5,h6{

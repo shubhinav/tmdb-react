@@ -7,7 +7,7 @@ import Footer from "../../Components/Footer/Footer"
 import ErrorMessage from "../../Components/ErrorMessage/ErrorMessage"
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
-import { makeImgUrl, convertMinsToHours, convertDatefromISO } from "../../Utils/utilityFunctions"
+import { makeImgUrl, convertMinsToHours, convertDatefromISO, getRatingColor } from "../../Utils/utilityFunctions"
 import { getMovieDetails } from "../../API/api_calls"
 
 export default function Details() {
@@ -109,24 +109,6 @@ export default function Details() {
         }
         else {
             return getUsCertificate()
-        }
-    }
-
-    function getRatingColor(rating) {
-
-        if (rating < 4) {
-            return 'rgb(220, 0, 0)'
-        }
-
-        if (rating >= 4 && rating < 7) {
-            return 'rgb(190, 160, 3)'
-        }
-
-        if (rating >= 7 && rating < 8) {
-            return 'rgb(0, 191, 0)'
-        }
-        else {
-            return 'green'
         }
     }
 
