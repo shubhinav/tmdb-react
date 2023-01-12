@@ -13,10 +13,10 @@ export default function Card({ title, name, character, job, movieImgUrl, castImg
                 </Link>
             }
             {
-                name && (character || job) &&
+                (name || character || job) &&
                 <div className='my-card'>
                     {castImgUrl ? <img loading='lazy' src={makeImgUrl(castImgUrl, 'w500')} alt={`${name}`} /> : <div className='no-img-availble'><Icon width='70' height='70' icon="ic:round-person" /></div>}
-                    <p className='mb-0 mt-1'>{name}</p>
+                    {name && <p className='mb-0 mt-1'>{name}</p>}
                     {character  && <p className='text-muted mb-0'>{character.replace('(uncredited)', '')}</p>}
                     {job && <p className='text-muted mb-0'>{job}</p>}
                 </div>

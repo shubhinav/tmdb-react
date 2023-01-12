@@ -25,7 +25,7 @@ export default function Details() {
 
     useEffect(() => {
 
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
 
         setLoading(true)
         setDetails()
@@ -142,7 +142,7 @@ export default function Details() {
                 return (
                     <div>
                         <p style={{ fontSize: '1.15rem' }} className="mb-1">Buy or Rent</p>
-                        {myObj.CA.rent.map((ent,i) => {
+                        {myObj.CA.rent.map((ent, i) => {
                             return <img key={i} width='40px' height='40px' style={{ borderRadius: '5px', marginRight: '5px' }} src={makeImgUrl(ent.logo_path)} alt={ent.provider_name} />
                         })}
                     </div>
@@ -175,7 +175,7 @@ export default function Details() {
                                     <div className="details-page-hero-content-tags d-flex align-items-center gap-3">
                                         {details.release_dates.results.length ? <p className="details-page-hero-content-tags-certification mb-0">{getCertification()}</p> : <></>}
                                         {regionReleaseDate || details.release_date ? <p className="mb-0">{regionReleaseDate ? convertDatefromISO(regionReleaseDate) : convertDatefromISO(details.release_date)}</p> : <></>}
-                                        <p className="mb-0">{convertMinsToHours(details.runtime)}</p>
+                                        {details.runtime ? <p className="mb-0">{convertMinsToHours(details.runtime)}</p> : <></>}
                                     </div>
                                 </div>
                                 <div className="details-page-hero-content-genres d-flex flex-wrap gap-1">
@@ -191,11 +191,12 @@ export default function Details() {
                                 <p className="details-page-hero-content-overview mb-0">{details.overview}</p>
                                 <div className="details-page-hero-content-rating-and-watch d-flex flex-wrap">
                                     <div className="details-page-hero-content-rating-content d-flex align-items-center gap-2">
-                                        <p style={{ backgroundColor: getRatingColor(details.vote_average) }} className="details-page-hero-content-rating m-0">{details.vote_average.toFixed(1)}</p>
+                                        {details.vote_count ? <p style={{ backgroundColor: getRatingColor(details.vote_average) }} className="details-page-hero-content-rating m-0">{details.vote_average.toFixed(1)}</p> : <p style={{ backgroundColor: getRatingColor('nr') }} className="details-page-hero-content-rating m-0">NR</p>}
+                                        {details.vote_count ? 
                                         <div>
                                             <p className="mb-1">User Score</p>
-                                            <p className="mb-0 details-page-hero-content-rating-count">Based on {details.vote_count} ratings</p>
-                                        </div>
+                                            <p className="mb-0 details-page-hero-content-rating-count">Based on {details.vote_count} rating(s)</p>
+                                        </div> : <></>}
                                     </div>
                                     {details['watch/providers']
                                         ?

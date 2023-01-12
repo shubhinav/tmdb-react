@@ -12,8 +12,18 @@
 }
 
 .discover-card-img {
-    max-width: 210px;
-    min-width: 210px;
+    max-width: 175px;
+    min-width: 175px;
+    aspect-ratio: 2/3;
+}
+
+.no-img-div{
+    background-color: var(--mid-dark-color);
+    border-radius: 10px 0 0 10px;
+    color: var(--dark-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .discover-card-img img {
@@ -22,10 +32,11 @@
 }
 
 .discover-card-title {
-    font-size: 1.75rem;
+    font-size: 1.3rem;
 }
 
 .discover-card-content {
+    font-size: 0.9rem;
     padding: 1.25em 1.5em;
     display: flex;
     flex-direction: column;
@@ -33,7 +44,7 @@
 }
 
 .discover-card-genre-single {
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .disocver-card-overview {

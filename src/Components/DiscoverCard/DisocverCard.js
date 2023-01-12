@@ -1,8 +1,9 @@
 import './discover-card.css'
+import { Icon } from '@iconify/react';
 
 import { convertDatefromISO, makeImgUrl, getRatingColor, truncateString } from "../../Utils/utilityFunctions"
 
-export default function DiscoverCard({ data, getGenreById }) {
+export default function DiscoverCard({ data, getGenreById, setIsImgLoading }) {
     return (
         <div className="discover-card">
             <div className="discover-card-img">
@@ -10,7 +11,7 @@ export default function DiscoverCard({ data, getGenreById }) {
             </div>
             <div className='discover-card-content'>
                 <h1 className="discover-card-title mb-0">{data.title}</h1>
-                <p className='mb-0'>{convertDatefromISO(data.release_date, true)}</p>
+                {data.release_date && <p className='mb-0'>{convertDatefromISO(data.release_date, true)}</p>}
                 <div className='discover-card-genres d-flex flex-wrap gap-1 mb-0'>
                     {getGenreById(data.genre_ids).map((genre, i) => {
                         if (i == data.genre_ids.length - 1) {
@@ -22,7 +23,7 @@ export default function DiscoverCard({ data, getGenreById }) {
                     })}
                 </div>
                 <p className='disocver-card-overview mb-0'>{data.overview}</p>
-                <p style={{ backgroundColor: getRatingColor(data.vote_average) }} className="disover-card-rating mb-0">{data.vote_average.toFixed(1)}</p>
+                {data.vote_count ? <p style={{ backgroundColor: getRatingColor(data.vote_average) }} className="disover-card-rating mb-0">{data.vote_average.toFixed(1)}</p> : <p style={{ backgroundColor: getRatingColor('nr') }} className="disover-card-rating mb-0">NR</p>}
             </div>
         </div>
     )
