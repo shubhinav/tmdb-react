@@ -12,6 +12,7 @@ export default function DiscoverCard({ data, getGenreById, setIsImgLoading }) {
             <div className='discover-card-content'>
                 <h1 className="discover-card-title mb-0">{data.title}</h1>
                 {data.release_date && <p className='mb-0'>{convertDatefromISO(data.release_date, true)}</p>}
+                {/* <p>{data.runtime}</p> */}
                 <div className='discover-card-genres d-flex flex-wrap gap-1 mb-0'>
                     {getGenreById(data.genre_ids).map((genre, i) => {
                         if (i == data.genre_ids.length - 1) {

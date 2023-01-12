@@ -41,6 +41,28 @@ export default function Discover() {
             ...baseStyles,
             backgroundColor: state.isFocused ? 'var(--dark-color)' : 'var(--mid-dark-color)',
         }),
+        input: (baseStyles) => ({
+            ...baseStyles,
+            color: 'var(--light-color)',
+            caretColor: 'var(--light-color)'
+        }),
+        multiValue: (baseStyles) => ({
+            ...baseStyles,
+            backgroundColor: 'var(--dark-color)',
+            color: 'var(--light-color)',
+        }),
+        multiValueLabel: (baseStyles) => ({
+            ...baseStyles,
+            color: 'var(--light-color)'
+        }),
+        multiValueRemove: (baseStyles, state) => (
+            {
+            ...baseStyles,
+            color: 'var(--light-color)',
+            borderRadius: '5px',
+            ":hover": { background: "transparent"}
+        }),
+
     }
 
     const [isLoading, setIsLoading] = useState(true)
