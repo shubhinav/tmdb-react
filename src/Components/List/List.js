@@ -6,6 +6,7 @@ export default function List({title, data}){
         <div className='content-container' style={{marginTop: '1.75em'}}>
             <h1 className='list-title'>{title}</h1>
             <div className='list-content d-flex overflow-auto'>
+                {console.log(data)}
                 {data.map((ent, i)=>{
                     return <Card key={i}
                                  title={ent.title} 
