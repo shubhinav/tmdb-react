@@ -9,7 +9,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { getDiscoverMovies } from "../../API/api_calls";
 import { Link } from "react-router-dom";
 
-export default function Discover() {
+export default function Discover({sortBy, setSortBy, genres, setGenres}) {
 
     const allGenres = JSON.parse(localStorage.getItem('allMovieGenres'))
 
@@ -74,8 +74,8 @@ export default function Discover() {
 
     // FILTER STATES
 
-    const [sortBy, setSortBy] = useState('popularity.desc')
-    const [genres, setGenres] = useState("")
+    
+    
     const [sortByChange, setSortByChange] = useState(false)
     const [genreChange, setGenreChange] = useState(false)
 
@@ -154,12 +154,41 @@ export default function Discover() {
         setGenres(array.toString())
     }
 
+    function getDefaultValueSortBy(){
+        return sortByOptions.find(ent=>ent.value == sortBy)
+    }
+
+    function getDefaultValueGenres(){
+    
+        function getGenreNameFromId(id){
+            const genreObj = allGenres.find(genre=>genre.id == id)
+            return genreObj.name
+        }
+
+        if (genres) {
+            const array = genres.split(',')
+            return array.map(genre=>{
+                return {value: genre, label: getGenreNameFromId(genre)}
+            })
+        }
+
+        return
+
+        // return [{value: id, name: getGenreNameFromId(id)}]
+    }
+
     return (
         <div>
             <Header page='discover' />
             <div className='content-container discover-filters d-flex gap-3 flex-wrap'>
-                <Select placeholder="Sort By" onChange={(selectedValue) => handleSortByChange(selectedValue)} options={sortByOptions} styles={selectStyles} />
-                <Select placeholder="Select Genres" onChange={(selectedValue) => handleGenreChange(selectedValue)} isMulti options={getGenreOptionsForSelect()} styles={selectStyles} />
+                <div>
+                    <label className='discover-filter-label'>Sort By</label>
+                    <Select placeholder="Select Sorting" defaultValue={getDefaultValueSortBy()} onChange={(selectedValue) => handleSortByChange(selectedValue)} options={sortByOptions} styles={selectStyles} />
+                </div>
+                <div>
+                    <label className='discover-filter-label'>Genres</label>
+                    <Select placeholder="Select Genres" defaultValue={getDefaultValueGenres()}  onChange={(selectedValue) => handleGenreChange(selectedValue)} isMulti options={getGenreOptionsForSelect()} styles={selectStyles} />
+                </div>
             </div>
             <FadeIn>
                 {isLoading && <div className='mt-5'><Loader /></div>}

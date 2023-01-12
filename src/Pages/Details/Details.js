@@ -20,6 +20,7 @@ export default function Details() {
     const [mainCrew, setMainCrew] = useState()
     const [trailers, setTrailers] = useState()
     const [recommendations, setRecommendations] = useState()
+    const [hasCertification, setHasCertification] = useState(true)
 
     let regionReleaseDate;
 
@@ -60,35 +61,6 @@ export default function Details() {
     }
 
     function getCertification() {
-
-        function getOtherCertification() {
-            const obj = details.release_dates.results.find(ent => {
-                return ent.release_dates.find(date => date.certification !== "")
-            })
-            if (obj) {
-                return obj.release_dates[0].certification
-            }
-            else {
-                return ""
-            }
-        }
-
-        function getUsCertificate() {
-            const usReleaseDates = details.release_dates.results.find(ent => ent.iso_3166_1 == 'US')
-            if (usReleaseDates) {
-                const usCertification = usReleaseDates.release_dates.find(ent => ent.certification)
-                if (usCertification) {
-                    return usCertification.certification
-                }
-                else {
-                    return getOtherCertification()
-                }
-            }
-            else {
-                return getOtherCertification()
-            }
-        }
-
         const regionReleaseDates = details.release_dates.results.find(ent => ent.iso_3166_1 == 'CA')
         if (regionReleaseDates) {
             const regionalCertification = regionReleaseDates.release_dates.find(ent => ent.certification)
@@ -109,6 +81,34 @@ export default function Details() {
         }
         else {
             return getUsCertificate()
+        }
+
+        function getUsCertificate() {
+            const usReleaseDates = details.release_dates.results.find(ent => ent.iso_3166_1 == 'US')
+            if (usReleaseDates) {
+                const usCertification = usReleaseDates.release_dates.find(ent => ent.certification)
+                if (usCertification) {
+                    return usCertification.certification
+                }
+                else {
+                    return getOtherCertification()
+                }
+            }
+            else {
+                return getOtherCertification()
+            }
+        }
+
+        function getOtherCertification() {
+            const obj = details.release_dates.results.find(ent => {
+                return ent.release_dates.find(date => date.certification !== "")
+            })
+            if (obj) {
+                return obj.release_dates[0].certification
+            }
+            else {
+                return ''
+            }
         }
     }
 
@@ -173,7 +173,7 @@ export default function Details() {
                                 <div>
                                     <h1 className="details-page-hero-content-title mb-1">{details.title}</h1>
                                     <div className="details-page-hero-content-tags d-flex align-items-center gap-3">
-                                        {details.release_dates.results.length ? <p className="details-page-hero-content-tags-certification mb-0">{getCertification()}</p> : <></>}
+                                        {getCertification() ? <p className="details-page-hero-content-tags-certification mb-0">{getCertification()}</p> : <></>}
                                         {regionReleaseDate || details.release_date ? <p className="mb-0">{regionReleaseDate ? convertDatefromISO(regionReleaseDate) : convertDatefromISO(details.release_date)}</p> : <></>}
                                         {details.runtime ? <p className="mb-0">{convertMinsToHours(details.runtime)}</p> : <></>}
                                     </div>
@@ -210,6 +210,7 @@ export default function Details() {
                     {mainCrew.length ? <List title="Main Crew" data={mainCrew} /> : <></>}
                     {trailers.length ? <List title="Trailers & Teasers" data={trailers} /> : <></>}
                     {recommendations.length ? <List title="Recommendations" data={recommendations} /> : <></>}
+                    {console.log(details)}
                     <Footer />
                 </FadeIn>}
         </div>
