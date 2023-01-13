@@ -3,10 +3,12 @@ import Header from "../../Components/Header/Header";
 import FadeIn from "react-fade-in/lib/FadeIn";
 import Loader from "../../Components/Utils/Loader/Loader"
 import ErrorMessage from "../../Components/ErrorMessage/ErrorMessage"
-import DiscoverCard from "../../Components/DiscoverCard/DisocverCard";
+import DiscoverCard from "../../Components/DiscoverCard/DiscoverCard";
 import Select from 'react-select'
 import { useState, useEffect, useCallback } from 'react'
 import { getDiscoverMovies } from "../../API/api_calls";
+import { getGenreNameFromId } from '../../Utils/utilityFunctions';
+import { linkResetStyles } from '../../Utils/utilityStyle';
 import { Link } from "react-router-dom";
 
 export default function Discover({sortBy, setSortBy, genres, setGenres}) {
@@ -18,8 +20,6 @@ export default function Discover({sortBy, setSortBy, genres, setGenres}) {
         { value: 'vote_average.desc', label: 'Rating' },
         { value: 'primary_release_date.desc', label: 'Release Date' }
     ]
-
-    // const genreOptions = getGenreOptions
 
     const selectStyles = {
 
@@ -79,11 +79,6 @@ export default function Discover({sortBy, setSortBy, genres, setGenres}) {
     const [sortByChange, setSortByChange] = useState(false)
     const [genreChange, setGenreChange] = useState(false)
 
-    const linkResetStyles = {
-        color: "var(--light-color)",
-        textDecoration: 'none'
-    }
-
     const observer = new IntersectionObserver(entries => {
         if (hasMorePages){
             entries.forEach(entry => {
@@ -123,14 +118,6 @@ export default function Discover({sortBy, setSortBy, genres, setGenres}) {
             })
     }, [page, sortBy, genres])
 
-    function getGenreById(genreIds) {
-        return genreIds.map(id => {
-            // eslint-disable-next-line
-            const genre = allGenres.find((genre) => genre.id == id)
-            return genre.name
-        })
-    }
-
     function handleSortByChange(selectedValue) {
         setIsLoading(true)
         setPage(1)
@@ -159,11 +146,6 @@ export default function Discover({sortBy, setSortBy, genres, setGenres}) {
     }
 
     function getDefaultValueGenres(){
-    
-        function getGenreNameFromId(id){
-            const genreObj = allGenres.find(genre=>genre.id == id)
-            return genreObj.name
-        }
 
         if (genres) {
             const array = genres.split(',')
@@ -174,7 +156,6 @@ export default function Discover({sortBy, setSortBy, genres, setGenres}) {
 
         return
 
-        // return [{value: id, name: getGenreNameFromId(id)}]
     }
 
     return (
@@ -198,8 +179,8 @@ export default function Discover({sortBy, setSortBy, genres, setGenres}) {
                         {movieList.length ? <div className="discover-movies-container mt-4">
                             {movieList.map((ent, i) => {
                                 if (ent.poster_path) {
-                                    if (i === movieList.length - 1) return <Link key={ent.id} to={`/movie/${ent.id}`} ref={lastElement} style={linkResetStyles}><DiscoverCard data={ent} getGenreById={getGenreById} /></Link>
-                                    return <Link key={ent.id} to={`/movie/${ent.id}`} style={linkResetStyles}><DiscoverCard data={ent} getGenreById={getGenreById} /></Link>
+                                    if (i === movieList.length - 1) return <Link key={ent.id} to={`/movie/${ent.id}`} ref={lastElement} style={linkResetStyles}><DiscoverCard data={ent}/></Link>
+                                    return <Link key={ent.id} to={`/movie/${ent.id}`} style={linkResetStyles}><DiscoverCard data={ent}/></Link>
                                 }
                                 return
                             })}

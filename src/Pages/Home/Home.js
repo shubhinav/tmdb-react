@@ -7,11 +7,14 @@ import Loader from "../../Components/Utils/Loader/Loader"
 import ErrorMessage from "../../Components/ErrorMessage/ErrorMessage"
 import bgImg from "../../assets/denise-jans-tV80374iytg-unsplash.jpg"
 import Button from "../../Components/Utils/Button/Button"
+import { useNavigate } from "react-router-dom"
 import { Icon } from "@iconify/react"
 import { useState, useEffect } from "react"
 import { getPopularMovies, getTopRatedMovies, getNowPlayingMovies, getUpcomingMovies } from "../../API/api_calls"
 
 export default function Home() {
+
+    const navigate = useNavigate()
 
     const [inputValue, setInputValue] = useState("")
     const [error, setError] = useState(false)
@@ -26,6 +29,7 @@ export default function Home() {
 
     function handleSubmit(e) {
         e.preventDefault()
+        navigate(`/search/${inputValue}`)
     }
 
     useEffect(() => {
@@ -84,7 +88,7 @@ export default function Home() {
                         </h2>
                     </div>
                     <form className='home-page-hero-content-form d-flex justify-content-between' onSubmit={handleSubmit}>
-                        <input value={inputValue} onChange={handleChange} placeholder="Search for a movie or TV show" />
+                        <input value={inputValue} onChange={handleChange} placeholder="Search for a movie" />
                         <Button fontSize='1.5rem' padding='0.25em 0.5em'><Icon icon="material-symbols:search-rounded" inline={true} /></Button>
                     </form>
                 </Hero>

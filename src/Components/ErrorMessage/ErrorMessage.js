@@ -16,7 +16,7 @@ export default function ErrorMessage({ allowRedirect = false, nothingToShow = fa
         <div className="content-container text-center error-message my-5">
             <div>
                 <Icon icon="iconoir:info-empty" width="80" height="80" className='mt-5' />
-                <h2 className='mt-4'>Nothing to show, try different filters.</h2>
+                <h2 className='mt-4'>Nothing to show, try a different query.</h2>
             </div>
         </div>
     )

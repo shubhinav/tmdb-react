@@ -42,4 +42,8 @@ export function getDiscoverMovies(param, page, genres){
     return api.get(`discover/movie?sort_by=${param}&with_genres=${genres}&page=${page}`)
 }
 
+export function getMovieSearch(param, page = 1){
+    return api.get(`search/movie?query=${encodeURI(param)}&page=${page}`)
+}
+
 
