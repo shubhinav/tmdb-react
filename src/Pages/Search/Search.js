@@ -69,6 +69,7 @@ export default function Search() {
 
     function handleSubmit(e) {
         e.preventDefault()
+        if(searchQuery === param.query) return
         setIsLoading(true)
         setIsError(false)
         setSearchList([])
