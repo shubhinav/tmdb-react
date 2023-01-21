@@ -1,5 +1,6 @@
 export default function Button({
     onClick,
+    disabled = false,
     children,
     border = 'none',
     padding = '0.5em 1em',
@@ -8,12 +9,12 @@ export default function Button({
     color = '#fafafa',
     borderRadius = '10px' }) {
     return (
-        <button onClick={onClick} style={{
+        <button onClick={onClick} disabled={disabled} style={{
             border: border,
             padding: padding,
             fontSize: fontSize,
-            backgroundColor: backgroundColor,
-            color: color,
+            backgroundColor: disabled ? 'var(--mid-dark-color)' : backgroundColor,
+            color: disabled ? 'rgba(255,255,255,0.5)' : color,
             borderRadius: borderRadius
         }}>
             {children}

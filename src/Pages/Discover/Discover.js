@@ -11,7 +11,7 @@ import { getGenreNameFromId } from '../../Utils/utilityFunctions';
 import { linkResetStyles } from '../../Utils/utilityStyle';
 import { Link } from "react-router-dom";
 
-export default function Discover({sortBy, setSortBy, genres, setGenres}) {
+export default function Discover({ sortBy, setSortBy, genres, setGenres }) {
 
     const allGenres = JSON.parse(localStorage.getItem('allMovieGenres'))
 
@@ -57,30 +57,23 @@ export default function Discover({sortBy, setSortBy, genres, setGenres}) {
         }),
         multiValueRemove: (baseStyles, state) => (
             {
-            ...baseStyles,
-            color: 'var(--light-color)',
-            borderRadius: '5px',
-            ":hover": { background: "transparent"}
-        }),
+                ...baseStyles,
+                color: 'var(--light-color)',
+                borderRadius: '5px',
+                ":hover": { background: "transparent" }
+            }),
 
     }
 
     const [isLoading, setIsLoading] = useState(true)
-    const [isPageLoading, setIsPageLoading] = useState(false)
+    const [isMoreLoading, setIsMoreLoading] = useState(false)
     const [isError, setIsError] = useState(false)
     const [movieList, setMovieList] = useState([])
     const [page, setPage] = useState(1)
     const [hasMorePages, setHasMorePages] = useState(true)
 
-    // FILTER STATES
-
-    
-    
-    const [sortByChange, setSortByChange] = useState(false)
-    const [genreChange, setGenreChange] = useState(false)
-
     const observer = new IntersectionObserver(entries => {
-        if (hasMorePages){
+        if (hasMorePages) {
             entries.forEach(entry => {
                 entry.isIntersecting && setPage(prevPage => prevPage + 1)
             })
@@ -89,68 +82,68 @@ export default function Discover({sortBy, setSortBy, genres, setGenres}) {
     })
 
     const lastElement = useCallback((node) => {
+        if (observer) observer.disconnect()
         if (node) return observer.observe(node)
         // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
-        if (page !== 1 ) {
-            setIsPageLoading(true)
-        }
+
+        setIsMoreLoading(true)
         setIsError(false)
 
         getDiscoverMovies(sortBy, page, genres)
             .then((res) => {
+                const array = res.data.results.filter(ent=>ent.poster_path)
                 setMovieList(prevData => {
-                    if (sortByChange || genreChange) return res.data.results
-                    return [...prevData, ...res.data.results]
+                    return [...prevData, ...array]
                 })
-                setSortByChange(false)
-                setGenreChange(false)
                 setIsLoading(false)
-                if(page == res.data.total_pages){
+                setIsMoreLoading(false)
+                if (page == res.data.total_pages) {
                     setHasMorePages(false)
                 }
             })
             .catch(() => {
                 setIsLoading(false)
+                setIsMoreLoading(false)
                 setIsError(true)
             })
     }, [page, sortBy, genres])
 
-    function handleSortByChange(selectedValue) {
-        setIsLoading(true)
-        setPage(1)
-        setSortByChange(true)
-        setSortBy(selectedValue.value)
-    }
-
-    function getGenreOptionsForSelect(){
-        return allGenres.map(genre=>{
-            return {value: genre.id, label: genre.name}
+    function getGenreOptionsForSelect() {
+        return allGenres.map(genre => {
+            return { value: genre.id, label: genre.name }
         })
     }
 
-    function handleGenreChange(selectedValue){
+    function handleSortByChange(selectedValue) {
         setIsLoading(true)
-        setGenreChange(true)
         setPage(1)
-        const array = selectedValue.map(ent=>{
+        setMovieList([])
+        setSortBy(selectedValue.value)
+    }
+
+    function handleGenreChange(selectedValue) {
+        setIsLoading(true)
+        setPage(1)
+        setMovieList([])
+        const array = selectedValue.map(ent => {
             return ent.value
         })
         setGenres(array.toString())
     }
 
-    function getDefaultValueSortBy(){
-        return sortByOptions.find(ent=>ent.value == sortBy)
+    function getDefaultValueSortBy() {
+        return sortByOptions.find(ent => ent.value == sortBy)
     }
 
-    function getDefaultValueGenres(){
+    function getDefaultValueGenres() {
 
         if (genres) {
             const array = genres.split(',')
-            return array.map(genre=>{
-                return {value: genre, label: getGenreNameFromId(genre)}
+            return array.map(genre => {
+                return { value: genre, label: getGenreNameFromId(genre) }
             })
         }
 
@@ -168,7 +161,7 @@ export default function Discover({sortBy, setSortBy, genres, setGenres}) {
                 </div>
                 <div>
                     <label className='discover-filter-label'>Genres</label>
-                    <Select placeholder="Select Genres" defaultValue={getDefaultValueGenres()}  onChange={(selectedValue) => handleGenreChange(selectedValue)} isMulti options={getGenreOptionsForSelect()} styles={selectStyles} />
+                    <Select placeholder="Select Genres" defaultValue={getDefaultValueGenres()} onChange={(selectedValue) => handleGenreChange(selectedValue)} isMulti options={getGenreOptionsForSelect()} styles={selectStyles} />
                 </div>
             </div>
             <FadeIn>
@@ -178,14 +171,11 @@ export default function Discover({sortBy, setSortBy, genres, setGenres}) {
                     <div className="content-container">
                         {movieList.length ? <div className="discover-movies-container mt-4">
                             {movieList.map((ent, i) => {
-                                if (ent.poster_path) {
-                                    if (i === movieList.length - 1) return <Link key={ent.id} to={`/movie/${ent.id}`} ref={lastElement} style={linkResetStyles}><DiscoverCard data={ent}/></Link>
-                                    return <Link key={ent.id} to={`/movie/${ent.id}`} style={linkResetStyles}><DiscoverCard data={ent}/></Link>
-                                }
-                                return
+                                if (i === movieList.length - 1) return <Link key={ent.id} to={`/movie/${ent.id}`} ref={lastElement} style={linkResetStyles}><DiscoverCard data={ent} /></Link>
+                                return <Link key={ent.id} to={`/movie/${ent.id}`} style={linkResetStyles}><DiscoverCard data={ent} /></Link>
                             })}
-                        </div>:<ErrorMessage nothingToShow={true}/>}
-                        {(isPageLoading && hasMorePages) && <Loader />}
+                        </div> : <ErrorMessage nothingToShow={true} />}
+                        {(isMoreLoading && hasMorePages) && <Loader />}
                     </div>}
             </FadeIn>
         </div>

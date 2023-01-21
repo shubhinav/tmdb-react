@@ -6,7 +6,7 @@ export default function DiscoverCard({ data }) {
     return (
         <div className="discover-card">
             <div className="discover-card-img">
-                <img src={makeImgUrl(data.poster_path, 'w500')} />
+                <img src={makeImgUrl(data.poster_path, 'w500')} alt={data.title}/>
             </div>
             <div className='discover-card-content'>
                 <h1 className="discover-card-title mb-0">{data.title}</h1>

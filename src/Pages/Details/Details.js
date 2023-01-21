@@ -20,7 +20,6 @@ export default function Details() {
     const [mainCrew, setMainCrew] = useState()
     const [trailers, setTrailers] = useState()
     const [recommendations, setRecommendations] = useState()
-    const [hasCertification, setHasCertification] = useState(true)
 
     let regionReleaseDate;
 
