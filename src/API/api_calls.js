@@ -27,7 +27,7 @@ export function getAllMovieGenres(){
     return api.get('genre/movie/list').then(res=>localStorage.setItem('allMovieGenres', JSON.stringify(res.data.genres)))
 }
 
-export function getDiscoverMovies(param, page, genres){
+export function getDiscoverMovies(param, page, genres, availabilities){
     const d = new Date()
 
     const year = d.getFullYear()
@@ -37,9 +37,9 @@ export function getDiscoverMovies(param, page, genres){
     const date = `${year}-${month}-${day}`
     
     if(param == 'primary_release_date.desc'){
-        return api.get(`discover/movie?sort_by=${param}&with_genres=${genres}&page=${page}&primary_release_date.lte=${date}`)
+        return api.get(`discover/movie?sort_by=${param}&with_genres=${genres}&with_watch_monetization_types=${availabilities}&watch_region=CA&page=${page}&primary_release_date.lte=${date}`)
     }
-    return api.get(`discover/movie?sort_by=${param}&with_genres=${genres}&page=${page}`)
+    return api.get(`discover/movie?sort_by=${param}&with_genres=${genres}&with_watch_monetization_types=${availabilities}&watch_region=CA&page=${page}`)
 }
 
 export function getMovieSearch(param, page = 1){

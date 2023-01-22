@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { makeImgUrl, convertMinsToHours, convertDatefromISO, getRatingColor } from "../../Utils/utilityFunctions"
 import { getMovieDetails } from "../../API/api_calls"
+import { linkResetStyles } from "../../Utils/utilityStyles"
 
 export default function Details() {
 
@@ -113,40 +114,63 @@ export default function Details() {
 
     function getWhereToWatch() {
 
+        let watchOptionsList
         const myObj = details['watch/providers'].results
 
+
         if ("CA" in myObj) {
-            if ('flatrate' in myObj.CA) {
-                return (
+
+            if ('free' in myObj.CA) {
+                watchOptionsList =
+                    <div>
+                        <p style={{ fontSize: '1.15rem' }} className="mb-1">Watch for Free</p>
+                        {myObj.CA.free.map((ent, i) => {
+                            return <img key={i} width='40px' height='40px' style={{ borderRadius: '5px', marginRight: '5px' }} src={makeImgUrl(ent.logo_path)} alt={ent.provider_name} />
+                        })}
+                    </div>
+
+            }
+
+            else if ('flatrate' in myObj.CA) {
+                watchOptionsList =
                     <div>
                         <p style={{ fontSize: '1.15rem' }} className="mb-1">Now Streaming</p>
                         {myObj.CA.flatrate.map((ent, i) => {
                             return <img key={i} width='40px' height='40px' style={{ borderRadius: '5px', marginRight: '5px' }} src={makeImgUrl(ent.logo_path)} alt={ent.provider_name} />
                         })}
                     </div>
-                )
+
             }
 
-            if ('buy' in myObj.CA) {
-                return (
+            else if ('buy' in myObj.CA) {
+                watchOptionsList =
                     <div>
                         <p style={{ fontSize: '1.15rem' }} className="mb-1">Buy or Rent</p>
                         {myObj.CA.buy.map((ent, i) => {
                             return <img key={i} width='40px' height='40px' style={{ borderRadius: '5px', marginRight: '5px' }} src={makeImgUrl(ent.logo_path)} alt={ent.provider_name} />
                         })}
                     </div>
-                )
+
             }
-            if ('rent' in myObj.CA) {
-                return (
+            else if ('rent' in myObj.CA) {
+                watchOptionsList =
                     <div>
                         <p style={{ fontSize: '1.15rem' }} className="mb-1">Buy or Rent</p>
                         {myObj.CA.rent.map((ent, i) => {
                             return <img key={i} width='40px' height='40px' style={{ borderRadius: '5px', marginRight: '5px' }} src={makeImgUrl(ent.logo_path)} alt={ent.provider_name} />
                         })}
                     </div>
-                )
+
             }
+            return (
+                <div>
+                    {watchOptionsList}
+                    {'link' in myObj.CA && <p className="mb-0 mt-1" style={{ fontSize: '0.9rem' }}>
+                        For more information visit this
+                        <a href={myObj.CA.link} target="_blank" rel="noreferrer" style={{ ...linkResetStyles, color: 'var(--accent-color)' }}> Link</a>.
+                    </p>}
+                </div>
+            )
         }
 
         return <></>
@@ -191,15 +215,17 @@ export default function Details() {
                                 <div className="details-page-hero-content-rating-and-watch d-flex flex-wrap">
                                     <div className="details-page-hero-content-rating-content d-flex align-items-center gap-2">
                                         {details.vote_count ? <p style={{ backgroundColor: getRatingColor(details.vote_average) }} className="details-page-hero-content-rating m-0">{details.vote_average.toFixed(1)}</p> : <p style={{ backgroundColor: getRatingColor('nr') }} className="details-page-hero-content-rating m-0">NR</p>}
-                                        {details.vote_count ? 
-                                        <div>
-                                            <p className="mb-1">User Score</p>
-                                            <p className="mb-0 details-page-hero-content-rating-count">Based on {details.vote_count} rating(s)</p>
-                                        </div> : <></>}
+                                        {details.vote_count ?
+                                            <div>
+                                                <p className="mb-1">User Score</p>
+                                                <p className="mb-0 details-page-hero-content-rating-count">Based on {details.vote_count} rating(s)</p>
+                                            </div> : <></>}
                                     </div>
                                     {details['watch/providers']
                                         ?
-                                        getWhereToWatch()
+                                        <div>
+                                            {getWhereToWatch()}
+                                        </div>
                                         : <></>}
                                 </div>
                             </div>
@@ -209,7 +235,6 @@ export default function Details() {
                     {mainCrew.length ? <List title="Main Crew" data={mainCrew} /> : <></>}
                     {trailers.length ? <List title="Trailers & Teasers" data={trailers} /> : <></>}
                     {recommendations.length ? <List title="Recommendations" data={recommendations} /> : <></>}
-                    {console.log(details)}
                     <Footer />
                 </FadeIn>}
         </div>

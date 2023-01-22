@@ -2,7 +2,7 @@ import './hero.css'
 import '../../Pages/Home/home.css'
 import '../../Pages/Details/details.css'
 
-export default function Hero({ inputValue, handleChange, handleSubmit, bgUrl, children, paddingY = '4em', paddingX = '2em', opacity='0.55'}) {
+export default function Hero({ bgUrl, children, paddingY = '4em', paddingX = '2em', opacity='0.55'}) {
 
     const backgroundStyle = {
         borderRadius: "10px",

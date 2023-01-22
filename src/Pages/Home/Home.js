@@ -81,10 +81,10 @@ export default function Home() {
                 >
                     <div className='home-page-hero-content-heading'>
                         <h1 className='home-page-hero-content-title'>
-                            Hero Area Tagline goes here, not decided yet.
+                            <span>Welcome to</span> <br/><b>The Home of Movies!</b> 
                         </h1>
                         <h2 className='home-page-hero-content-subtitle'>
-                            Hero area subtitle goes here.
+                            Thousands of movies to discover, at your fingertips.
                         </h2>
                     </div>
                     <form className='home-page-hero-content-form d-flex justify-content-between' onSubmit={handleSubmit}>

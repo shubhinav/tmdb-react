@@ -15,6 +15,7 @@ function App() {
   // FILTER STATES FOR DISCOVER PAGE (added here to maintain filters through renders)
   const [sortBy, setSortBy] = useState('popularity.desc')
   const [genres, setGenres] = useState("")
+  const [availabilities, setAvailabilities] = useState("")
 
   useEffect(()=>{
     if(!localStorage.getItem('allMovieGenres')){
@@ -29,7 +30,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route exact path="/" element={<Home/>}/>
-        <Route path="/discover" element={<Discover sortBy={sortBy} setSortBy={setSortBy} genres={genres} setGenres={setGenres}/>}/>
+        <Route path="/discover" element={<Discover sortBy={sortBy} setSortBy={setSortBy} genres={genres} setGenres={setGenres} availabilities={availabilities} setAvailabilities={setAvailabilities}/>}/>
         <Route path="/movie/:movieId" element={<Details/>}/>
         <Route path="*" element={<ErrorMessage allowRedirect={true}/>}/>
         <Route path="/search" element={<Search/>}>

@@ -7,7 +7,8 @@ import { Icon } from '@iconify/react'
 import { useState, useEffect, useRef, useCallback } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { getMovieSearch } from "../../API/api_calls"
-import { linkResetStyles } from '../../Utils/utilityStyle'
+import { linkResetStyles } from '../../Utils/utilityStyles'
+import FadeIn from "react-fade-in/lib/FadeIn"
 
 export default function Search() {
 
@@ -82,7 +83,8 @@ export default function Search() {
         if (!param.query) return <h3 className='mt-5 pt-5 text-center text-muted'>Search for a movie to show results.</h3>
         if (!searchList.length) return <ErrorMessage nothingToShow={true} />
         return (
-            <div className='discover-movies-container mt-5'>
+            <FadeIn>
+                <div className='discover-movies-container mt-5'>
                 {searchList.map((ent, i) => {
 
                     if (i === searchList.length - 1) {
@@ -93,6 +95,7 @@ export default function Search() {
                 })}
                 {(isMoreLoading && hasMore) && <div><Loader /></div>}
             </div>
+            </FadeIn>
         )
     }
 

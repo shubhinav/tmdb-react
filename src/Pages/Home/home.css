@@ -2,16 +2,20 @@
 /* HERO AREA */
 
 .home-page-hero-content-heading {
-    margin-bottom: 5em;
+    margin-bottom: 4em;
 }
 
 .home-page-hero-content-title {
-    font-size: 3.25rem;
-    margin-bottom: 0.25em;
+    font-size: 3.75rem;
+    margin-bottom: 0.4em;
+    line-height: 1;
+}
+.home-page-hero-content-title span{
+    font-size: 2.5rem;
 }
 
 .home-page-hero-content-subtitle {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
 }
 
 .home-page-hero-content-form {
@@ -42,11 +46,13 @@
 
 @media(max-width: 700px) {
     .home-page-hero-content-title {
-        font-size: 2.75rem;
-        margin-bottom: 0.4em;
+        font-size: 3.5rem;
+    }
+    .home-page-hero-content-title span{
+        font-size: 2.34rem;
     }
 
     .home-page-hero-content-subtitle {
-        font-size: 2rem;
+        font-size: 1.68rem;
     }
 }

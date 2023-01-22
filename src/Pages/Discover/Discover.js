@@ -8,62 +8,32 @@ import Select from 'react-select'
 import { useState, useEffect, useCallback } from 'react'
 import { getDiscoverMovies } from "../../API/api_calls";
 import { getGenreNameFromId } from '../../Utils/utilityFunctions';
-import { linkResetStyles } from '../../Utils/utilityStyle';
+import { linkResetStyles, selectStyles } from '../../Utils/utilityStyles';
 import { Link } from "react-router-dom";
 
-export default function Discover({ sortBy, setSortBy, genres, setGenres }) {
+export default function Discover({ sortBy, setSortBy, genres, setGenres, availabilities, setAvailabilities }) {
 
     const allGenres = JSON.parse(localStorage.getItem('allMovieGenres'))
 
     const sortByOptions = [
-        { value: 'popularity.desc', label: 'Popularity' },
-        { value: 'vote_average.desc', label: 'Rating' },
-        { value: 'primary_release_date.desc', label: 'Release Date' }
+        { value: 'popularity.desc', label: 'Most Popular' },
+        { value: 'vote_average.desc', label: 'Highest Rating' },
+        { value: 'primary_release_date.desc', label: 'Latest' }
     ]
 
-    const selectStyles = {
-
-        control: (baseStyles) => ({
-            ...baseStyles,
-            backgroundColor: 'var(--mid-dark-color)',
-            borderColor: 'rgba(255,255,255,0.3)',
-            minWidth: '300px'
-        }),
-        menu: (baseStyles) => ({
-            ...baseStyles,
-            backgroundColor: 'var(--mid-dark-color)',
-        }),
-        singleValue: (baseStyles) => ({
-            ...baseStyles,
-            color: 'var(--light-color)',
-        }),
-        option: (baseStyles, state) => ({
-            ...baseStyles,
-            backgroundColor: state.isFocused ? 'var(--dark-color)' : 'var(--mid-dark-color)',
-        }),
-        input: (baseStyles) => ({
-            ...baseStyles,
-            color: 'var(--light-color)',
-            caretColor: 'var(--light-color)'
-        }),
-        multiValue: (baseStyles) => ({
-            ...baseStyles,
-            backgroundColor: 'var(--dark-color)',
-            color: 'var(--light-color)',
-        }),
-        multiValueLabel: (baseStyles) => ({
-            ...baseStyles,
-            color: 'var(--light-color)'
-        }),
-        multiValueRemove: (baseStyles, state) => (
-            {
-                ...baseStyles,
-                color: 'var(--light-color)',
-                borderRadius: '5px',
-                ":hover": { background: "transparent" }
-            }),
-
+    function getGenreOptionsForSelect() {
+        return allGenres.map(genre => {
+            return { value: genre.id, label: genre.name }
+        })
     }
+
+    const availabilityOptions = [
+        { value: 'flatrate', label: 'Streaming' },
+        { value: 'free', label: 'Free' },
+        { value: 'ads', label: 'With Ads' },
+        { value: 'rent', label: 'Rent' },
+        { value: 'buy', label: 'Buy' },
+    ]
 
     const [isLoading, setIsLoading] = useState(true)
     const [isMoreLoading, setIsMoreLoading] = useState(false)
@@ -71,6 +41,7 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres }) {
     const [movieList, setMovieList] = useState([])
     const [page, setPage] = useState(1)
     const [hasMorePages, setHasMorePages] = useState(true)
+
 
     const observer = new IntersectionObserver(entries => {
         if (hasMorePages) {
@@ -92,9 +63,9 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres }) {
         setIsMoreLoading(true)
         setIsError(false)
 
-        getDiscoverMovies(sortBy, page, genres)
+        getDiscoverMovies(sortBy, page, genres, availabilities)
             .then((res) => {
-                const array = res.data.results.filter(ent=>ent.poster_path)
+                const array = res.data.results.filter(ent => ent.poster_path)
                 setMovieList(prevData => {
                     return [...prevData, ...array]
                 })
@@ -109,13 +80,7 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres }) {
                 setIsMoreLoading(false)
                 setIsError(true)
             })
-    }, [page, sortBy, genres])
-
-    function getGenreOptionsForSelect() {
-        return allGenres.map(genre => {
-            return { value: genre.id, label: genre.name }
-        })
-    }
+    }, [page, sortBy, genres, availabilities])
 
     function handleSortByChange(selectedValue) {
         setIsLoading(true)
@@ -134,21 +99,36 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres }) {
         setGenres(array.toString())
     }
 
+    function handleAvailabilitiesChange(selectedValue) {
+        setIsLoading(true)
+        setPage(1)
+        setMovieList([])
+        const array = selectedValue.map(ent => {
+            return ent.value
+        })
+        setAvailabilities(array.toString())
+    }
+
     function getDefaultValueSortBy() {
         return sortByOptions.find(ent => ent.value == sortBy)
     }
 
     function getDefaultValueGenres() {
-
         if (genres) {
             const array = genres.split(',')
             return array.map(genre => {
                 return { value: genre, label: getGenreNameFromId(genre) }
             })
         }
-
         return
+    }
 
+    function getDefaultValueAvailabilities() {
+        const array = availabilities.split(',')
+
+        return array.map((ent) => {
+            return availabilityOptions.find((option) => option.value == ent)
+        })
     }
 
     return (
@@ -157,11 +137,32 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres }) {
             <div className='content-container discover-filters d-flex gap-3 flex-wrap'>
                 <div>
                     <label className='discover-filter-label'>Sort By</label>
-                    <Select placeholder="Select Sorting" defaultValue={getDefaultValueSortBy()} onChange={(selectedValue) => handleSortByChange(selectedValue)} options={sortByOptions} styles={selectStyles} />
+                    <Select placeholder="Select Sorting"
+                        defaultValue={getDefaultValueSortBy()}
+                        onChange={(selectedValue) => handleSortByChange(selectedValue)}
+                        options={sortByOptions}
+                        styles={selectStyles}
+                    />
                 </div>
                 <div>
                     <label className='discover-filter-label'>Genres</label>
-                    <Select placeholder="Select Genres" defaultValue={getDefaultValueGenres()} onChange={(selectedValue) => handleGenreChange(selectedValue)} isMulti options={getGenreOptionsForSelect()} styles={selectStyles} />
+                    <Select placeholder="Select Genres"
+                        defaultValue={getDefaultValueGenres()}
+                        onChange={(selectedValue) => handleGenreChange(selectedValue)}
+                        isMulti
+                        options={getGenreOptionsForSelect()}
+                        styles={selectStyles}
+                    />
+                </div>
+                <div>
+                    <label className='discover-filter-label'>Availability</label>
+                    <Select placeholder="Select Availability"
+                        isMulti
+                        defaultValue={getDefaultValueAvailabilities()}
+                        onChange={(selectedValue) => handleAvailabilitiesChange(selectedValue)}
+                        options={availabilityOptions}
+                        styles={selectStyles}
+                    />
                 </div>
             </div>
             <FadeIn>
