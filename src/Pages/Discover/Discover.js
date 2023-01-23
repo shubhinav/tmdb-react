@@ -138,6 +138,7 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres, availab
     }
 
     function resetFilters(){
+        if(sortBy == 'popularity.desc' && genres == '' && availabilities == '') return
         setIsLoading(true)
         setPage(1)
         setMovieList([])
@@ -188,7 +189,7 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres, availab
                     />
                 </div>
 
-                <div className='align-self-end'><Button onClick={resetFilters}>Reset Filters</Button></div>
+                <div className='align-self-end'><Button onClick={resetFilters} borderRadius="5px">Reset Filters</Button></div>
 
             </div>
             <FadeIn>
