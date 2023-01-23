@@ -4,8 +4,9 @@ import FadeIn from "react-fade-in/lib/FadeIn";
 import Loader from "../../Components/Utils/Loader/Loader"
 import ErrorMessage from "../../Components/ErrorMessage/ErrorMessage"
 import DiscoverCard from "../../Components/DiscoverCard/DiscoverCard";
+import Button from '../../Components/Utils/Button/Button'
 import Select from 'react-select'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { getDiscoverMovies } from "../../API/api_calls";
 import { getGenreNameFromId } from '../../Utils/utilityFunctions';
 import { linkResetStyles, selectStyles } from '../../Utils/utilityStyles';
@@ -14,6 +15,10 @@ import { Link } from "react-router-dom";
 export default function Discover({ sortBy, setSortBy, genres, setGenres, availabilities, setAvailabilities }) {
 
     const allGenres = JSON.parse(localStorage.getItem('allMovieGenres'))
+
+    const availabilitySelectRef = useRef()
+    const genreSelectRef = useRef()
+    const sortBySelectRef = useRef()
 
     const sortByOptions = [
         { value: 'popularity.desc', label: 'Most Popular' },
@@ -83,6 +88,7 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres, availab
     }, [page, sortBy, genres, availabilities])
 
     function handleSortByChange(selectedValue) {
+        if (selectedValue.value == sortBy) return
         setIsLoading(true)
         setPage(1)
         setMovieList([])
@@ -131,6 +137,20 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres, availab
         })
     }
 
+    function resetFilters(){
+        setIsLoading(true)
+        setPage(1)
+        setMovieList([])
+        availabilitySelectRef.current.clearValue()
+        genreSelectRef.current.clearValue()
+        sortBySelectRef.current.setValue(()=>{
+            return { value: 'popularity.desc', label: 'Most Popular' }
+        })
+        setSortBy('popularity.desc')
+        setGenres('')
+        setAvailabilities('')
+    }
+
     return (
         <div>
             <Header page='discover' />
@@ -138,6 +158,7 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres, availab
                 <div>
                     <label className='discover-filter-label'>Sort By</label>
                     <Select placeholder="Select Sorting"
+                        ref={sortBySelectRef}
                         defaultValue={getDefaultValueSortBy()}
                         onChange={(selectedValue) => handleSortByChange(selectedValue)}
                         options={sortByOptions}
@@ -147,6 +168,7 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres, availab
                 <div>
                     <label className='discover-filter-label'>Genres</label>
                     <Select placeholder="Select Genres"
+                        ref={genreSelectRef}
                         defaultValue={getDefaultValueGenres()}
                         onChange={(selectedValue) => handleGenreChange(selectedValue)}
                         isMulti
@@ -157,6 +179,7 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres, availab
                 <div>
                     <label className='discover-filter-label'>Availability</label>
                     <Select placeholder="Select Availability"
+                        ref={availabilitySelectRef}
                         isMulti
                         defaultValue={getDefaultValueAvailabilities()}
                         onChange={(selectedValue) => handleAvailabilitiesChange(selectedValue)}
@@ -164,6 +187,9 @@ export default function Discover({ sortBy, setSortBy, genres, setGenres, availab
                         styles={selectStyles}
                     />
                 </div>
+
+                <div className='align-self-end'><Button onClick={resetFilters}>Reset Filters</Button></div>
+
             </div>
             <FadeIn>
                 {isLoading && <div className='mt-5'><Loader /></div>}
