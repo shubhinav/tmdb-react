@@ -1,3 +1,4 @@
+import './search.css'
 import DiscoverCard from "../../Components/DiscoverCard/DiscoverCard"
 import ErrorMessage from "../../Components/ErrorMessage/ErrorMessage"
 import Header from "../../Components/Header/Header"
@@ -21,7 +22,9 @@ export default function Search() {
     const [isMoreLoading, setIsMoreLoading] = useState(false)
     const [isError, setIsError] = useState(false)
     const [searchList, setSearchList] = useState([])
-    const [searchQuery, setSearchQuery] = useState(param.query ? param.query : '')
+    const [suggestionsList, setSuggestionsList] = useState([])
+    const [showSuggestionList, setShowSuggestionList] = useState(false)
+    const [searchQuery, setSearchQuery] = useState('')
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(true)
 
@@ -43,11 +46,12 @@ export default function Search() {
         if (!param.query) inputRef.current.focus()
 
         setIsMoreLoading(true)
-
+        setShowSuggestionList(false)
         if (param.query) {
+            setSearchQuery(param.query)
             getMovieSearch(param.query, page)
                 .then((res) => {
-                    const array = res.data.results.filter(ent=> ent.poster_path)
+                    const array = res.data.results.filter(ent => ent.poster_path)
                     setSearchList(prevData => {
                         return [...prevData, ...array]
                     })
@@ -64,17 +68,50 @@ export default function Search() {
         }
     }, [param.query, page])
 
+    useEffect(() => {
+        setSuggestionsList([])
+        let controller = new AbortController();
+        if (searchQuery) {
+            getMovieSearch(searchQuery, 1, controller)
+                .then((res) => {
+                    res.data.results.map((movie) => {
+                        if(movie.poster_path){
+                            return setSuggestionsList((prevData) => {
+                                return [...prevData, movie.title]
+                            })
+                        }
+                        return
+                    })
+                })
+                .catch(e => {
+                    if (e.code == 'ERR_CANCELED') return
+                })
+        }
+        return () => controller.abort()
+    }, [searchQuery])
+
     function handleChange(e) {
         setSearchQuery(e.target.value)
+        setShowSuggestionList(true)
     }
 
     function handleSubmit(e) {
         e.preventDefault()
-        if(searchQuery === param.query) return
+        if (searchQuery === param.query) return
         setIsLoading(true)
         setIsError(false)
         setSearchList([])
+        setPage(1)
         navigate(`/search/${searchQuery}`)
+    }
+
+    function handleSuggestionClick(e){
+        if (param.query === e.target.innerHTML) return 
+        setIsLoading(true)
+        setIsError(false)
+        setSearchList([])
+        setPage(1)
+        navigate(`/search/${e.target.innerHTML}`)
     }
 
     function showContent() {
@@ -85,16 +122,16 @@ export default function Search() {
         return (
             <FadeIn>
                 <div className='discover-movies-container mt-5'>
-                {searchList.map((ent, i) => {
+                    {searchList.map((ent, i) => {
 
-                    if (i === searchList.length - 1) {
-                        return <Link to={`/movie/${ent.id}`} key={ent.id} ref={lastElement} style={linkResetStyles}><DiscoverCard data={ent} /></Link>
-                    }
-                    return <Link to={`/movie/${ent.id}`} key={ent.id} style={linkResetStyles}><DiscoverCard data={ent} /></Link>
+                        if (i === searchList.length - 1) {
+                            return <Link to={`/movie/${ent.id}`} key={ent.id} ref={lastElement} style={linkResetStyles}><DiscoverCard data={ent} /></Link>
+                        }
+                        return <Link to={`/movie/${ent.id}`} key={ent.id} style={linkResetStyles}><DiscoverCard data={ent} /></Link>
 
-                })}
-                {(isMoreLoading && hasMore) && <div><Loader /></div>}
-            </div>
+                    })}
+                    {(isMoreLoading && hasMore) && <div><Loader /></div>}
+                </div>
             </FadeIn>
         )
     }
@@ -103,10 +140,15 @@ export default function Search() {
         <div>
             <Header />
             <div className="content-container">
-                <form className='home-page-hero-content-form d-flex justify-content-between' onSubmit={handleSubmit}>
-                    <input ref={inputRef} value={searchQuery} onChange={handleChange} placeholder="Search for a movie" />
-                    <Button disabled={!searchQuery} fontSize='1.5rem' padding='0.25em 0.5em'><Icon icon="material-symbols:search-rounded" inline={true} /></Button>
-                </form>
+                <div className='position-relative'>
+                    <form className='home-page-hero-content-form d-flex justify-content-between' onSubmit={handleSubmit}>
+                        <input ref={inputRef} value={searchQuery} onChange={handleChange} placeholder="Search for a movie" />
+                        <Button disabled={!searchQuery} fontSize='1.5rem' padding='0.25em 0.5em'><Icon icon="material-symbols:search-rounded" inline={true} /></Button>
+                    </form>
+                    <div className={showSuggestionList ? 'suggestion-div' : 'd-none'}>
+                        {suggestionsList.map((title, i) => <p key={i} className='suggestion-item' onClick={handleSuggestionClick}>{title}</p>)}
+                    </div>
+                </div>
                 {showContent()}
             </div>
         </div>

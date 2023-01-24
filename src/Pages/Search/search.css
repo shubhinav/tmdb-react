@@ -1,0 +1,21 @@
+.suggestion-div{
+    margin-top: 2px;
+    border-radius: 10px;
+    background-color: var(--mid-dark-color);
+    position: absolute;
+    top: 50px;
+    left: 0;
+    z-index: 500;
+    max-height: 500px;
+    overflow: auto;
+}
+
+.suggestion-item{
+    margin: 0;
+    padding: 0.5em 1em;
+}
+
+.suggestion-item:hover{
+    background-color: var(--dark-color);
+    cursor: pointer;
+}

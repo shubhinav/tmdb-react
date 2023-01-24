@@ -42,7 +42,8 @@ export function getDiscoverMovies(param, page, genres, availabilities){
     return api.get(`discover/movie?sort_by=${param}&with_genres=${genres}&with_watch_monetization_types=${availabilities}&watch_region=CA&page=${page}`)
 }
 
-export function getMovieSearch(param, page = 1){
+export function getMovieSearch(param, page = 1, controller){
+    if (controller) return api.get(`search/movie?query=${encodeURI(param)}&page=${page}`, {signal: controller.signal})
     return api.get(`search/movie?query=${encodeURI(param)}&page=${page}`)
 }
 
