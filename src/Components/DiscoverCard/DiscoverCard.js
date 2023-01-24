@@ -1,12 +1,17 @@
 import './discover-card.css'
-
-import { convertDatefromISO, makeImgUrl, getRatingColor, getGenreById} from "../../Utils/utilityFunctions"
+import { useState } from 'react'
+import { convertDatefromISO, makeImgUrl, getRatingColor, getGenreById } from "../../Utils/utilityFunctions"
 
 export default function DiscoverCard({ data }) {
+
+    const [hasImgLoaded, setHasImgLoaded] = useState(false)
+
     return (
         <div className="discover-card">
-            <div className="discover-card-img">
-                <img src={makeImgUrl(data.poster_path, 'w500')} alt={data.title}/>
+            <div className={hasImgLoaded ? 'discover-card-img' : 'no-img shine'}>
+                <img className={!hasImgLoaded ? 'd-none' : ''} src={makeImgUrl(data.poster_path, 'w500')} alt={data.title} onLoad={() => setHasImgLoaded(true)}/>
+                <p className={hasImgLoaded ? 'd-none' : 'p-2 mb-0'}>{data.title}</p>
+                <div className='shimmer'></div>
             </div>
             <div className='discover-card-content'>
                 <h1 className="discover-card-title mb-0">{data.title}</h1>

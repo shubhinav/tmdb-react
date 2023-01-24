@@ -81,7 +81,7 @@ export default function Home() {
                 >
                     <div className='home-page-hero-content-heading'>
                         <h1 className='home-page-hero-content-title'>
-                            <span>Welcome to</span> <br/><b>The Home of Movies!</b> 
+                            <span>Welcome to</span> <br /><b>The Home of Movies!</b>
                         </h1>
                         <h2 className='home-page-hero-content-subtitle'>
                             Thousands of movies to discover, at your fingertips.
@@ -94,10 +94,16 @@ export default function Home() {
                 </Hero>
                 {error ? <ErrorMessage /> :
                     <div>
-                        {popularMovies ? <List title={'Popular'} data={popularMovies} /> : <Loader />}
-                        {topRatedMovies ? <List title={'Top Rated'} data={topRatedMovies} /> : <Loader />}
-                        {nowPlayingMovies ? <List title={'Now in Theatres'} data={nowPlayingMovies} /> : <Loader />}
-                        {upcomingMovies ? <List title={'Upcoming'} data={upcomingMovies} /> : <Loader />}
+                        {(popularMovies && topRatedMovies && nowPlayingMovies && upcomingMovies)
+                            ?
+                            <>
+                                <List title={'Popular'} data={popularMovies} />
+                                <List title={'Top Rated'} data={topRatedMovies} />
+                                <List title={'Now in Theatres'} data={nowPlayingMovies} />
+                                <List title={'Upcoming'} data={upcomingMovies} />
+                            </>
+                            :
+                            <div className="m-5"><Loader /></div>}
                     </div>}
                 <Footer />
             </FadeIn>

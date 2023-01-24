@@ -17,18 +17,41 @@
     aspect-ratio: 2/3;
 }
 
-.no-img-div{
-    background-color: var(--mid-dark-color);
-    border-radius: 10px 0 0 10px;
-    color: var(--dark-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+.shine {
+    background: var(--dark-color);
+    background-image: linear-gradient(100deg, var(--dark-color) 0%, #373737 20%, var(--dark-color) 40%, var(--dark-color) 100%);
+    background-repeat: no-repeat;
+    background-size: 800px 240px; 
+    display: inline-block;
+    position: relative; 
+    
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: shimmer;
+    animation-timing-function: linear;
+    }
+    
+    @keyframes shimmer {
+        0% {
+          background-position: -468px 0;
+        }
+        
+        100% {
+          background-position: 468px 0; 
+        }
+      }
 
 .discover-card-img img {
     border-radius: 10px 0 0 10px;
     aspect-ratio: 2/3;
+}
+
+.no-img {
+    aspect-ratio: 2/3;
+    min-width: 160px;
+    width: 160px;
+    border-radius: 10px 0 0 10px;
 }
 
 .discover-card-title {
@@ -62,44 +85,50 @@
     margin-top: 5px;
 }
 
-@media(max-width:1000px){
-    .disocver-card-overview{
+@media(max-width:1000px) {
+    .disocver-card-overview {
         display: none;
     }
+
     .discover-card-img {
         max-width: 175px;
         min-width: 175px;
     }
 }
 
-@media(max-width: 700px){
-    .discover-card-title, .discover-card-genre-single{
+@media(max-width: 700px) {
+
+    .discover-card-title,
+    .discover-card-genre-single {
         display: none;
     }
+
     .discover-card-img {
         max-width: none;
         min-width: 0;
     }
 
-    .discover-card{
+    .discover-card {
         flex-direction: column;
         max-width: fit-content;
         min-width: 0;
         margin-bottom: 0;
         align-items: flex-start;
     }
-    .discover-card-img img{
+
+    .discover-card-img img, .no-img {
         border-radius: 10px 10px 0 0;
     }
 
-    .discover-card-content{
+    .discover-card-content {
         width: 100%;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         padding: 0.5em 0.75em;
     }
-    .disover-card-rating{
+
+    .disover-card-rating {
         margin-top: 0;
         padding: 0.25em 0.5em;
     }
