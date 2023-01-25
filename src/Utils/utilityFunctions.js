@@ -1,7 +1,5 @@
 import { imgBaseUrl } from "../API/axiosInstance"
 
-const allGenres = JSON.parse(localStorage.getItem('allMovieGenres'))
-
 export function makeImgUrl(url, size = 'original'){
     return `${imgBaseUrl}/${size}${url}`
 }
@@ -54,6 +52,8 @@ export function truncateString(str, num = 300) {
   }
 
 export function getGenreById(genreIds) {
+
+    const allGenres = JSON.parse(localStorage.getItem('allMovieGenres'))
     
     return genreIds.map(id => {
         // eslint-disable-next-line
@@ -63,6 +63,7 @@ export function getGenreById(genreIds) {
 }
 
 export function getGenreNameFromId(id){
+    const allGenres = JSON.parse(localStorage.getItem('allMovieGenres'))
     const genreObj = allGenres.find(genre=>genre.id == id)
     return genreObj.name
 }
