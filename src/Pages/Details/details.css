@@ -3,6 +3,7 @@
 
 .details-page-hero{
     gap: 2em;
+    color: #fafafa
 }
 
 .details-page-hero-content{
@@ -38,7 +39,6 @@
     border-radius: 10px;
     width: fit-content;
     font-size: 1.2rem;
-    color: var(--light-color);
 }
 
 .details-page-hero-content-rating-count{

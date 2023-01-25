@@ -3,6 +3,14 @@ export const linkResetStyles = {
     textDecoration: 'none'
 }
 
+export const resetButtonStyles = {
+    border: 'none',
+    color: 'var(--light-color)',
+    backgroundColor: 'transparent',
+    margin: '0',
+    padding: '0'
+}
+
 export const selectStyles = {
 
     control: (baseStyles) => ({
@@ -22,6 +30,7 @@ export const selectStyles = {
     option: (baseStyles, state) => ({
         ...baseStyles,
         backgroundColor: 'var(--mid-dark-color)',
+        color: state.isSelected && 'var(--light-color)',
         ":hover": { background: "var(--dark-color)" }
     }),
     input: (baseStyles) => ({

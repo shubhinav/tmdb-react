@@ -26,7 +26,7 @@ export function convertDatefromISO(date, returnYearOnly = false){
 export function getRatingColor(rating) {
 
     if(rating == 'nr') {
-        return 'var(--mid-dark-color)'
+        return '#323232'
     }
 
     if (rating < 4) {

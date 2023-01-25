@@ -4,21 +4,21 @@
 }
 
 .header-logo a{
-    color: #48cae4;
+    color: var(--accent-color);
     text-decoration: none;
 }
 .nav-link{
     font-size: 1.2rem;
-    color: #fafafa;
+    color: var(--light-color);
     padding: 0;
 }
 
 .nav-link:focus{
-    color: #fafafa;
+    color: var(--light-color);
 }
 
 .nav-link:hover{
-    color: #48cae4;
+    color: var(--accent-color);
 }
 
 .nav-item{

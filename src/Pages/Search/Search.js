@@ -42,6 +42,10 @@ export default function Search() {
         if (node) return observer.observe(node)
     }, [])
 
+    useEffect(()=>{
+        setSearchList([])
+    },[param.query])
+
     useEffect(() => {
         if (!param.query) inputRef.current.focus()
 

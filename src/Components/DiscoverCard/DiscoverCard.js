@@ -1,13 +1,16 @@
 import './discover-card.css'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { convertDatefromISO, makeImgUrl, getRatingColor, getGenreById } from "../../Utils/utilityFunctions"
+import {ThemeContext} from '../../Context/ThemeContext'
 
 export default function DiscoverCard({ data }) {
+
+    const {theme} = useContext(ThemeContext)
 
     const [hasImgLoaded, setHasImgLoaded] = useState(false)
 
     return (
-        <div className="discover-card">
+        <div className={`${theme}-shadow discover-card`}>
             <div className={hasImgLoaded ? 'discover-card-img' : 'no-img shine'}>
                 <img className={!hasImgLoaded ? 'd-none' : ''} src={makeImgUrl(data.poster_path, 'w500')} alt={data.title} onLoad={() => setHasImgLoaded(true)}/>
                 <p className={hasImgLoaded ? 'd-none' : 'p-2 mb-0'}>{data.title}</p>

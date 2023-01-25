@@ -5,7 +5,7 @@ export default function Button({
     border = 'none',
     padding = '0.5em 1em',
     fontSize = '1rem',
-    backgroundColor = '#48cae4',
+    backgroundColor = 'var(--accent-color)',
     color = '#fafafa',
     borderRadius = '10px' }) {
     return (
