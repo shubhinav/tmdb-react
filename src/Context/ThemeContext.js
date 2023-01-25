@@ -6,7 +6,7 @@ function ThemeContextProvider({children}){
 
     const currentTheme = localStorage.getItem('currentTheme')
 
-    const [theme, setTheme] = useState(currentTheme)
+    const [theme, setTheme] = useState(currentTheme ? currentTheme : 'dark')
 
     function changeTheme(){
         setTheme(prevTheme => {

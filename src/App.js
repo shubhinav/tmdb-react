@@ -5,6 +5,7 @@ import Details from './Pages/Details/Details';
 import Search from './Pages/Search/Search';
 import ErrorMessage from './Components/ErrorMessage/ErrorMessage';
 import Loader from './Components/Utils/Loader/Loader';
+import ScrollToTop from "react-scroll-to-top";
 import {Routes, Route} from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react';
 import { ThemeContext } from './Context/ThemeContext';
@@ -60,6 +61,7 @@ function App() {
             <Route path=':query' element={<Search/>}/>
         </Route>
       </Routes>
+      <ScrollToTop smooth top={1000} color='var(--light-color)' width='20px' height='20px' className='scroll-to-top'/>
     </div>
   );
 }

@@ -3,6 +3,9 @@
 
 :root{
   --accent-color: #48cae4;
+  --dark-color: #323232;
+  --mid-dark-color: #444444;
+  --light-color: #fafafa
 }
 
 
@@ -24,7 +27,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb{
-  background-color: rgba(255,255,255,0.3);
+  background-color: rgba(150,150,150,0.7);
   border-radius: 5px;
 }
 
