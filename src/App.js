@@ -26,7 +26,9 @@ function App() {
     if(!localStorage.getItem('allMovieGenres')){
       getAllMovieGenres().then(()=>setIsLoading(false))
     }
-    setIsLoading(false)
+    else{
+      setIsLoading(false)
+    }
   },[])
 
   useEffect(()=>{
